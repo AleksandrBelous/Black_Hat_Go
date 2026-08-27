@@ -22,9 +22,11 @@ func oneScanWG(port int, wg *sync.WaitGroup) {
 
 func main() {
 	var wg sync.WaitGroup
+
 	for port := 1; port <= 1024; port++ {
 		wg.Add(1)
 		go oneScanWG(port, &wg)
 	}
+
 	wg.Wait()
 }
