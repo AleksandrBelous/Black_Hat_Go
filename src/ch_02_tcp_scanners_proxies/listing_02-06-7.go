@@ -5,7 +5,7 @@ import (
 	"sync"
 )
 
-func worker(ports chan int, wg *sync.WaitGroup) {
+func workerWG(ports chan int, wg *sync.WaitGroup) {
 	for port := range ports {
 		fmt.Println(port)
 		wg.Done()
@@ -13,11 +13,12 @@ func worker(ports chan int, wg *sync.WaitGroup) {
 }
 
 func main() {
-	ports := make(chan int, 100)
 	var wg sync.WaitGroup
 
+	ports := make(chan int, 100)
+
 	for i := 0; i < cap(ports); i++ {
-		go worker(ports, &wg)
+		go workerWG(ports, &wg)
 	}
 
 	for port := 1; port <= 1024; port++ {
@@ -26,5 +27,6 @@ func main() {
 	}
 
 	wg.Wait()
+
 	close(ports)
 }
